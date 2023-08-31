@@ -1,0 +1,66 @@
+﻿@model List<tblElasticData>
+@{
+    ViewData["Title"] = "Display Elastic Table";
+}
+<input type="hidden" id="exportData" />
+
+<h2>@ViewData["Title"]</h2>
+<input type="hidden" id="exportData" />
+
+<div class="container">
+    <form method="get">
+        <input type="hidden" name="searchMailNumber" value="@ViewBag.SearchMailNumber" />
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" name="searchSubject" placeholder="Input Mail Subject">
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="submit">Submit</button>
+            </div>
+        </div>
+        <div class="mb-4">
+            <label>Date Range</label>
+            <div class="input-daterange input-group" id="datepicker6" data-date-format="yyyy-mm-dd" data-date-autoclose="true" data-provide="datepicker" data-date-container="#datepicker6">
+                <input type="text" class="form-control datepicker" name="start" id="startDate" placeholder="Start Date" autocomplete="off" />
+                <input type="text" class="form-control datepicker" name="end" id="endDate" placeholder="End Date" autocomplete="off" />
+                <button type="button" class="btn btn-danger" id="clearDates">Clear</button>
+            </div>
+        </div>
+    </form>
+  
+    @if (Model != null && Model.Any())
+    {
+        <h4 class="card-title">Datatable</h4>
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+            <table id="datatable-buttons" class="data-class table table-bordered dt-responsive nowrap w-100">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>To</th>
+                        <th>From</th>
+                        <th>Event Type</th>
+                        <th>Event Date</th>
+                        <th>Channel</th>
+                        <th>Subject</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Id</td>
+                            <td>@item.To</td>
+                            <td>@item.From</td>
+                            <td>@item.EventType</td>
+                            <td>@item.EventDate</td>
+                            <td>@item.Channel</td>
+                            <td>@item.MessageCategory</td>
+                        </tr>
+                    }
+                </tbody>
+                </table>
+        </div>
+        </div>
+        </div>
+    }
+</div>

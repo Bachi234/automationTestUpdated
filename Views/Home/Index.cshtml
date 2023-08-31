@@ -1,0 +1,49 @@
+﻿@model List<tblEvent>
+@{
+    ViewData["Title"] = "Search Mail Number";
+}
+<h2>@ViewData["Title"]</h2>
+@*<input type="hidden" id="searchedMailNumber" value="@ViewBag.searchMailNumber" />*@
+<div class="container">
+
+    <!-- Mail number search bar -->
+    <form id="mailNumberForm" method="get" action="@Url.Action("Index", "Home")">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" id="searchMailNumberInput" name="searchMailNumber" placeholder="Search Mail Number">
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="submit">Search Mail Number</button>
+            </div>
+        </div>
+    </form>
+
+    @if (Model != null && Model.Any())
+    {
+        <h4>Search Result/s:</h4>
+        <div class="table-responsive">
+            <table id="dataTable" class="table table-striped table-responsive">
+                <thead>
+                    <tr>
+                        <th data-orderable="true">Mail Subject</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Subject</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+<script>
+    $(document).ready(function () {
+        $('form').on('submit', function () {
+            var searchMailNumber = $('[name="searchMailNumber"]').val();
+            sessionStorage.setItem('searchMailNumber', searchMailNumber);
+            console.log('searchMailNumber:', searchMailNumber);
+        });
+    });
+</script>
