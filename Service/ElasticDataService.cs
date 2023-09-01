@@ -1,11 +1,5 @@
 ﻿using automationTest.Context;
 using automationTest.Models;
-using DocumentFormat.OpenXml.Features;
-using DocumentFormat.OpenXml.Office2010.Excel;
-using DocumentFormat.OpenXml.Wordprocessing;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-
 namespace automationTest.Service
 {
     public class ElasticDataService
@@ -49,7 +43,6 @@ namespace automationTest.Service
                     Subject = data.Subject
                 })
                 .ToList();
-             
         }
     }
 }
