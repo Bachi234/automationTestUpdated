@@ -1,5 +1,8 @@
 ﻿using automationTest.Context;
 using automationTest.Models;
+using DocumentFormat.OpenXml.Features;
+using DocumentFormat.OpenXml.Office2010.Excel;
+using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
@@ -29,6 +32,24 @@ namespace automationTest.Service
                     Subject = data.Subject
                 })
                 .ToList();
+        }
+        public List<tblElasticData> GetElasticDataByDate(DateTime? startDate, DateTime? endDate)
+        {
+            return _context.tblElasticData
+                .Where(data => data.EventDate.Date >= startDate && data.EventDate.Date <= endDate)
+                .Select(data => new tblElasticData
+                {
+                    Id = data.Id,
+                    To = data.To,
+                    From = data.From,
+                    EventType = data.EventType,
+                    EventDate = data.EventDate,
+                    Channel = data.Channel,
+                    MessageCategory = data.MessageCategory,
+                    Subject = data.Subject
+                })
+                .ToList();
+             
         }
     }
 }

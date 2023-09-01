@@ -26,6 +26,7 @@ namespace automationTest.Controllers
             _tblEventData = eventDataServices;
             _logger = logger;
         }
+
         public IActionResult Index(string searchMailNumber)
         {
             ViewBag.SearchMailNumber = searchMailNumber;
@@ -36,12 +37,16 @@ namespace automationTest.Controllers
             List<tblEvent> events = _tblEventData.GetMailNumber(searchMailNumber);
             return View(events);
         }
-        public IActionResult DisplayElasticData(string searchMailNumber, string searchSubject, DateTime? start, DateTime? end)
+
+        [HttpGet]
+        public IActionResult DisplayElasticData(string searchMailNumber, string searchSubject)
         {
             List<tblElasticData> elasticData = _tblElasticData.GetElasticDataBySubject(searchSubject);
 
             ViewBag.SearchSubject = searchSubject;
             ViewBag.SearchMailNumber = searchMailNumber;
+            ViewBag.SearchSubjectDateStart = null;
+            ViewBag.SearchSubjectDateEnd = null;
 
             if (!string.IsNullOrEmpty(searchMailNumber))
             {
@@ -49,15 +54,26 @@ namespace automationTest.Controllers
                 elasticData = mailNumberData.Any() ? mailNumberData : elasticData;
             }
 
-            // Apply date range filtering if start and end dates are provided
-            if (start.HasValue && end.HasValue)
+            return View(elasticData);
+        }
+
+        [HttpPost]
+        public IActionResult DisplayElasticData(string searchSubject, DateTime? startDate, DateTime? endDate)
+        {
+            List<tblElasticData> elasticData = _tblElasticData.GetElasticDataByDate(startDate, endDate);
+
+            ViewBag.SearchSubject = null; // Clear search subject when filtering by dates
+            ViewBag.SearchSubjectDateStart = startDate;
+            ViewBag.SearchSubjectDateEnd = endDate;
+
+            if (startDate != null && endDate != null)
             {
-                elasticData = elasticData.Where(item => item.EventDate >= start.Value && item.EventDate <= end.Value).ToList();
+                // Include only the Date property when comparing
+                elasticData = elasticData.Where(data => data.EventDate.Date >= startDate && data.EventDate.Date <= endDate).ToList();
             }
 
             return View(elasticData);
         }
-
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
