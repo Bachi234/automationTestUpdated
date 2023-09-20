@@ -41,26 +41,20 @@
                     <table id="datatable-buttons" class="data-class table table-bordered dt-responsive nowrap w-100">
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>To</th>
-                                <th>From</th>
+                                <th>Subject</th>
                                 <th>Event Type</th>
                                 <th>Event Date</th>
                                 <th>Channel</th>
-                                <th>Subject</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var item in Model)
                             {
                                 <tr>
-                                    <td>@item.Id</td>
-                                    <td>@item.To</td>
-                                    <td>@item.From</td>
+                                    <td>@item.Subject</td>
                                     <td>@item.EventType</td>
                                     <td>@item.EventDate</td>
                                     <td>@item.Channel</td>
-                                    <td>@item.MessageCategory</td>
                                 </tr>
                             }
                         </tbody>

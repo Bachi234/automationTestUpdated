@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - AutoMailer</title>
     <link href="https://cdn.jsdelivr.net/npm/boxicons@2.0.9/css/boxicons.min.css" rel="stylesheet" />
-   @* <link href="~/css/bootstrap-datepicker.min.css" rel="stylesheet" />
-    <link href="~/css/datepicker.min.css" rel="stylesheet" />*@
     <link href="~/css/app.min.css" rel="stylesheet" />
     <link href="~/css/bootstrap.min.css" rel="stylesheet" />
     <link href="~/css/icons.min.css" rel="stylesheet" />
@@ -17,7 +15,6 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-               @* <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Home</a>*@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -35,6 +32,7 @@
             </div>
         </nav>
     </header>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -55,8 +53,6 @@
     <script src="~/js/datatables.bootstrap4.min.js"></script>
     <script src="~/js/datatables.buttons.min.js"></script>
     <script src="~/js/buttons.html5.min.js"></script>
-    @*<script src="~/js/bootstrap-datepicker.min.js"></script>*@
-   @* <script src="~/js/datepicker.min.js"></script>*@
     <script>
         $(document).ready(function () {
             try 
@@ -70,7 +66,8 @@
                         {
                             extend: 'excelHtml5',
                             text: 'Excel',
-                            className: 'btn btn-success btn-sm waves-effect waves-light'
+                            className: 'btn btn-success btn-sm waves-effect waves-light',
+                            filename: 'test_Filename'
                         },
                         {
                             extend: 'pdfHtml5',
@@ -84,9 +81,7 @@
                         search: "Table Filter:"
                     }
                 }).buttons().container().appendTo("#datatable-buttons_wrapper .col-md-6:eq(0)");
-
                 $(".dataTables_length select").addClass("form-select form-select-sm");
-
             } catch (error) {
                 console.error("An error occurred:", error);
             }
