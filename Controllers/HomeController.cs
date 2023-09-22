@@ -1,17 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
 using automationTest.Models;
-using Microsoft.EntityFrameworkCore;
-using automationTest.Context;
-using automationTest.ViewModel;
 using automationTest.Service;
-using System.Text;
-using OfficeOpenXml;
-using Microsoft.AspNetCore.Mvc.Diagnostics;
-using System;
 
 namespace automationTest.Controllers
 {
@@ -78,20 +69,34 @@ namespace automationTest.Controllers
                 return View(elasticData);
             }
         }
-
         [HttpPost]
         public IActionResult DisplayElasticData(DateTime? startDate, DateTime? endDate)
         {
-            List<tblElasticData> elasticData = _tblElasticData.GetElasticDataByDate(startDate, endDate);
-
-            if (startDate != null && endDate != null)
-            {
-                elasticData = elasticData.Where(data => data.EventDate.Date >= startDate && data.EventDate.Date <= endDate).ToList();
-            }
             ViewBag.SearchSubject = null; // Clear search subject when filtering by dates
             ViewBag.SearchSubjectDateStart = startDate;
             ViewBag.SearchSubjectDateEnd = endDate;
-            return View(elasticData);
+
+            try
+            {
+                ViewBag.ShowLoadingModal = false; // Show loading modal just before data fetching
+
+                List<tblElasticData> elasticData = _tblElasticData.GetElasticDataByDate(startDate, endDate);
+
+                if (startDate != null && endDate != null)
+                {
+                    elasticData = elasticData.Where(data => data.EventDate.Date >= startDate && data.EventDate.Date <= endDate).ToList();
+                }
+
+                ViewBag.ShowLoadingModal = true; // Hide loading modal after data fetching
+
+                return View(elasticData);
+            }
+            catch (Exception ex)
+            {
+                // Handle any errors, log the exception, and return an error view or message
+                ViewBag.ShowLoadingModal = false; // Hide loading modal in case of an error
+                return View("Error");
+            }
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -5,7 +5,6 @@ namespace automationTest.Service
     public class ElasticDataService
     {
         private readonly ApplicationDbContext _context;
-
         public ElasticDataService(ApplicationDbContext context)
         {
             _context = context;
@@ -16,13 +15,6 @@ namespace automationTest.Service
                 .Where(data => data.Subject == searchSubject)
                 .Select(data => new tblElasticData
                 {
-                    Id = data.Id,
-                    To = data.To,
-                    From = data.From,
-                    EventType = data.EventType,
-                    EventDate = data.EventDate,
-                    Channel = data.Channel,
-                    MessageCategory = data.MessageCategory,
                     Subject = data.Subject
                 })
                 .ToList();
@@ -33,14 +25,10 @@ namespace automationTest.Service
                 .Where(data => data.EventDate.Date >= startDate && data.EventDate.Date <= endDate)
                 .Select(data => new tblElasticData
                 {
-                    Id = data.Id,
-                    To = data.To,
-                    From = data.From,
+                    Subject = data.Subject,
                     EventType = data.EventType,
                     EventDate = data.EventDate,
                     Channel = data.Channel,
-                    MessageCategory = data.MessageCategory,
-                    Subject = data.Subject
                 })
                 .ToList();
         }

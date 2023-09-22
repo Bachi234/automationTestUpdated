@@ -2,6 +2,21 @@
 @{
     ViewData["Title"] = "Display Elastic Table";
 }
+<div id="ProgressModal" class="modal" visible="true" runat="server" style="display: none; z-index: 1000; background-color: rgba(0, 0, 0, 0.37); overflow-y: auto;">
+    <!-- Modal content -->
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body" style="text-align: center;">
+                <div class="row">
+                    <center>
+                        <img src="~/modalloadinggifs/uploadloading.gif" runat="server" id="loadingimg" style="display: block; height: 120px; height: 120px; width: 120px;" /> <br />
+                        <img src="~/modalloadinggifs/pleasewait.gif" runat="server" id="Img1" style="display: block; height: 40px; width: auto;" /><br />
+                    </center>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <h2>Display Elastic Table</h2>
 
@@ -20,14 +35,14 @@
         <div class="row mb-3 d-flex align-items-end">
             <div class="col-md-5">
                 <label for="start-date" class="form-label">Start Date</label>
-                <input class="form-control" type="date" name="startDate" value="@ViewBag.StartDate">
+                <input id="startDateInput" class="form-control" type="date" name="startDate" value="@ViewBag.StartDate">
             </div>
             <div class="col-md-5">
                 <label for="end-date" class="form-label">End Date</label>
-                <input class="form-control" type="date" name="endDate" value="@ViewBag.EndDate">
+                <input id="endDateInput" class="form-control" type="date" name="endDate" value="@ViewBag.EndDate">
             </div>
             <div class="col-md-2">
-                <button type="submit" class="btn btn-primary" name="filterButton">Filter Dates</button>
+                <button id="filterButton" type="submit" class="btn btn-primary" name="filterButton">Filter Dates</button>
             </div>
         </div>
     </form>
@@ -64,3 +79,50 @@
         </div>
     }
 </div>
+
+<script>
+    // Function to show the loading modal
+    function ShowModalProgress() {
+        var ModProgress = document.getElementById('ProgressModal');
+        ModProgress.style.display = "block";
+    }
+
+    // Function to hide the loading modal
+    function HideModalProgress() {
+        var ModProgress = document.getElementById('ProgressModal');
+        ModProgress.style.display = "none";
+    }
+
+    // Function to load data and update the table
+    async function loadDataAndDisplayTable() {
+        try {
+            ShowModalProgress(); // Show the loading modal immediately
+
+            var startDate = document.getElementById('startDateInput').value;
+            var endDate = document.getElementById('endDateInput').value;
+            var url = '/Home/DisplayElasticData?startDate=' + startDate + '&endDate=' + endDate + '&filterButton=';
+
+            const response = await fetch(url);
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json();
+
+            // Update your table or do other processing here with the data
+            console.log(data);
+
+            HideModalProgress(); // Hide the loading modal after the data is loaded and displayed
+        } catch (error) {
+            console.error('Error:', error);
+            // Handle any errors or show an error message
+            HideModalProgress(); // Hide the loading modal in case of an error
+        }
+    
+    // Call the loadDataAndDisplayTable function immediately
+    loadDataAndDisplayTable();
+</script>
+
+
+
