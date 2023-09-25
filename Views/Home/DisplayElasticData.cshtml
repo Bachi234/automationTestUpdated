@@ -17,10 +17,10 @@
         </div>
     </div>
 </div>
-
 <h2>Display Elastic Table</h2>
 
 <div class="container">
+    
     <form method="get" name="searchForm">
         <input type="hidden" name="searchMailNumber" value="@ViewBag.SearchMailNumber" />
         <div class="input-group mb-3">
@@ -42,10 +42,12 @@
                 <input id="endDateInput" class="form-control" type="date" name="endDate" value="@ViewBag.EndDate">
             </div>
             <div class="col-md-2">
-                <button id="filterButton" type="submit" class="btn btn-primary" name="filterButton">Filter Dates</button>
+                <button id="filterButton" type="submit" class="btn btn-primary" name="filterButton" onclick="loadDataForCurrentPage()">Filter Dates</button>
+
             </div>
         </div>
     </form>
+
 
     @if (Model != null && Model.Any())
     {
@@ -78,51 +80,8 @@
             </div>
         </div>
     }
-</div>
+    </div>
 
-<script>
-    // Function to show the loading modal
-    function ShowModalProgress() {
-        var ModProgress = document.getElementById('ProgressModal');
-        ModProgress.style.display = "block";
-    }
-
-    // Function to hide the loading modal
-    function HideModalProgress() {
-        var ModProgress = document.getElementById('ProgressModal');
-        ModProgress.style.display = "none";
-    }
-
-    // Function to load data and update the table
-    async function loadDataAndDisplayTable() {
-        try {
-            ShowModalProgress(); // Show the loading modal immediately
-
-            var startDate = document.getElementById('startDateInput').value;
-            var endDate = document.getElementById('endDateInput').value;
-            var url = '/Home/DisplayElasticData?startDate=' + startDate + '&endDate=' + endDate + '&filterButton=';
-
-            const response = await fetch(url);
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
-            const data = await response.json();
-
-            // Update your table or do other processing here with the data
-            console.log(data);
-
-            HideModalProgress(); // Hide the loading modal after the data is loaded and displayed
-        } catch (error) {
-            console.error('Error:', error);
-            // Handle any errors or show an error message
-            HideModalProgress(); // Hide the loading modal in case of an error
-        }
-    
-    // Call the loadDataAndDisplayTable function immediately
-    loadDataAndDisplayTable();
-</script>
 
 
 
